@@ -66,18 +66,8 @@ const splitter = new gridfs ({
 
 app.use(multer({splitter}).single('cover')); */
 
-//const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
-const splitter = new gridfs ({
-            url: process.env.DATABASE_URL,
-            file: (req, file) => { return {
-            bucketName:'public/uploads/bookCovers',
-            filename:'file_' + file.originalname}
-}})
-
-app.use(multer({splitter}).single('cover'));
-
 //File Saving
-/* const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
+const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
 const storage = multer.diskStorage({
     destination: path.join(__dirname, 'public/uploads/bookCovers'),
     limits: {
@@ -92,7 +82,7 @@ const storage = multer.diskStorage({
         cb(null, new Date().getTime() + path.extname(file.originalname));
     }})
 
-app.use(multer({storage}).single('cover')); */
+app.use(multer({storage}).single('cover'));
 
 //Static files
 app.use(express.static(path.join(__dirname, 'public')));
