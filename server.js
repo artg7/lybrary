@@ -64,7 +64,7 @@ const splitter = new gridfs ({
             return null;}
 }})
 
-app.use(multer({splitter}).single('cover'));
+app.use(multer.memoryStorage({splitter}).single('cover'));
 
 //File Saving
 /* const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
