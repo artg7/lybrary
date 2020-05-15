@@ -67,8 +67,10 @@ const splitter = new gridfs ({
 app.use(multer({splitter}).single('cover')); */
 
 //const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
-const splitter = new gridfs (process.env.DATABASE_URL, {
-            bucketName:'public/uploads/bookCovers'
+const splitter = new gridfs ({
+            url: process.env.DATABASE_URL,
+            bucketName:'public/uploads/bookCovers',
+            filename:'file_' + file.originalname
 })
 
 app.use(multer({splitter}).single('cover'));
