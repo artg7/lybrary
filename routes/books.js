@@ -54,27 +54,30 @@ router.post('/', async (req, res) => { //pasing the stored file: input name @ bo
         description: req.body.description,
         publishDate: new Date(req.body.publishDate), // to convert the splitted string from the form again into a date
         pageCount: req.body.pageCount,
-        coverImageName: '/uploads/bookCovers/' + req.file.filename
+        //coverImageName: '/uploads/bookCovers/' + req.file.filename //Required for MULTER
     })
+    saveCover(book, req.body.cover) //To save to FilePond as image are not files anymore, but strings of the body @ _form_fields input name="cover"
 
     try {
         const newBook = await book.save()
         //res.redirect(`books/${newBook.id}`)
         res.redirect('books')
     } catch (e) {
-        if (book.coverImageName) {
+        //Required for MULTER
+/*         if (book.coverImageName) {
             const fileName = book.coverImageName
             removeBookCover(fileName) //delete the failed book upload
-        }
+        } */
         renderNewPage(res, book, hasError = true) //as the form may have an error
         console.error(e)
     }
 })
 
-function removeBookCover (fileName) {
+//Required for MULTER, as we are removing files (multipart/form-data)
+/* function removeBookCover (fileName) {
     unlink(path.resolve('./public' + fileName), err => { //as fileName already contains '/uploads/bookCovers/' string
         if (err) console.error(err)}) //redirect the error to console, so we dont ruin user experience displaying internal errors on the broswer
-}
+} */
 
 async function renderNewPage (res, book, hasError = false) { //res to render/redirect, book data for try, hasError for catch
     try {
@@ -84,6 +87,20 @@ async function renderNewPage (res, book, hasError = false) { //res to render/red
         res.render('books/new', newBookParams) 
     } catch {
         res.redirect('/books')
+    }
+}
+
+//FilePond File Saving Function
+const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
+function saveCover(book, coverEncoded) { //as files get encoded in a string form, i.e.: "data": "iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAA..."
+    if (coverEncoded) {
+        const cover = JSON.parse(coverEncoded) //analyzing the coverEncoded to decipher the image itself
+        if (imageMimeTypes.includes(cover.type)) { //mimetype in multer is named just type in FilePond
+            book.coverImageName = new Buffer.from(cover.data, 'base64') // data=string of characters that FilePond encode generates from image (using base64 format), and later deciphers
+            book.coverImageType = cover.type //to indicate the decipher what extension has to add
+        }
+    else {
+        return //when coverEncoded == null, stop the function execution
     }
 }
 
