@@ -102,6 +102,6 @@ function saveCover(book, coverEncoded) { //as files get encoded in a string form
     else {
         return //when coverEncoded == null, stop the function execution
     }
-}
+}}
 
 module.exports = router;
