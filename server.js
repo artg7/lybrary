@@ -67,7 +67,7 @@ const splitter = new gridfs ({
 app.use(multer({splitter}).single('cover')); */
 
 //File Saving
-//const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
+const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
 const storage = multer.diskStorage({
     destination: path.join(__dirname, 'public/uploads/bookCovers'),
     limits: {
@@ -77,20 +77,9 @@ const storage = multer.diskStorage({
         parts: 1 // files + fields
     },
     fileFilter: (req, file, cb) => {
-        
-        var filetypes = /jpeg|jpg|png|gif/;
-        var mimetype = filetypes.test(file.mimetype);
-        var extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-
-        if (mimetype && extname) {
-            return cb(null, true); //null=not accepted; true=accepted
-        }
-        cb("Error: Formato de imagen no soportado. Formatos soportados: " + filetypes)},
-        //cb(null, imageMimeTypes.includes(file.mimetype))},
-    
+        cb(null, imageMimeTypes.includes(file.mimetype))},
     filename: (req, file, cb) => {
         cb(null, new Date().getTime() + path.extname(file.originalname));
-        //cb(null, uuid() + path.extname(file.originalname));
     }})
 
 app.use(multer({storage}).single('cover'));
