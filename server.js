@@ -56,7 +56,7 @@ const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
 const splitter = new gridfs ({
     url: process.env.DATABASE_URL,
     file: (req, file) => {
-        if (file.mimetype === imageMimeTypes) {
+        if (file.mimetype === 'image/jpeg') {
           return {
             bucketName:path.join(__dirname, 'public/uploads/bookCovers'),
             filename: new Date().getTime() + path.extname(file.originalname)};
