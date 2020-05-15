@@ -1,0 +1,7 @@
+<h2>Nuevo Libro</h2>
+<!-- Creating form inside authors/new route & redirecting results to router '/' POST -->
+<form action="/books"  method="POST" enctype="multipart/form-data"> <!-- to accept multipart data (files) that multer handles  -->
+<%- include('_form_fields.ejs') %>  
+    <a href="/books">Cancelar</a> <!-- Anchor reference (no btn) as cancel btn just redirect, so does not interact with an objetc -->
+    <button type="submit">Crear</button> <!-- send back to authors '/' route once completed (hook of the POST route) & render new data over that route -->
+</form>

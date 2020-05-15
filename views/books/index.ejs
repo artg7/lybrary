@@ -1,0 +1,25 @@
+<h2>Buscar Libros</h2>
+<form action="/books" method="GET">
+<div>
+    <label>Título</label>
+    <input type="text" name="title" value="<%= searchBar.title %>"> <!-- persisting search value input on search field after btn on click -->
+</div>
+<div>
+    <label>Publicado Después de </label>
+    <input type="date" name="publishedAfter" value="<%= searchBar.publishedAfter %>"> <!-- persisting date input after btn on click -->
+</div>
+<div>
+    <label>Publicado Antes de</label>
+    <input type="date" name="publishedBefore" value="<%= searchBar.publishedBefore %>"> <!-- persisting date input after btn on click -->
+</div>
+<button type="submit">Buscar</button>
+</form>
+<br>
+<div>
+<!-- 'element' can be changed for 'book' or other name, but in the end are the elements of the array saved @const books XXX at the authors route found in db -->
+<% books.forEach(element => { %> 
+    <div>
+    <img height="150" width="100" src="<%= element.coverImageName %>"> <!-- no need to include /public as it is already define for static files -->
+   <% }) %>
+</div>
+</div>

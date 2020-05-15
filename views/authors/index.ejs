@@ -1,0 +1,11 @@
+<h2>Buscar Autores</h2>
+<form action="/authors" method="GET">
+<label>Nombre</label>
+<input type="text" name="name" value="<%= searchBar.name %>"> <!-- persisting search value input on search field after btn on click -->
+<button type="submit">Buscar</button>
+</form>
+<br>
+<!-- 'element' can be changed for 'author' or other name, but in the end are the elements of the array saved @const authors at the authors route found in db -->
+<% authors.forEach(element => { %>
+    <div><%= element.name %> </div>
+   <% }) %>

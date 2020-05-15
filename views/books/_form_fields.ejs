@@ -1,0 +1,34 @@
+<div>
+    <label>Título</label>
+    <input type="text" name="title" value="<%= book.title %>" placeholder="Título" autofocus required>
+</div>
+<!-- option selector & reference its values from diferent collection -->
+<div>
+    <label>Autor</label>
+    <select name="author"><% authors.forEach(element => { %>
+        <% if (element.id === book.author)  {%> <!-- as it comes based on ObjectId from other collection (Author) to Book collection in db -->
+        <option selected label="<%= element.name %>" value="<%= element.id %>"> <!-- set as selected -->
+        <% }else{ %>
+        <option label="<%= element.name %>" value="<%= element.id %>">
+        <% } %>
+    <% }) %>
+    </select>
+</div>
+<div>
+    <label>Fecha de Publicación</label>
+    <input type="date" name="publishDate" 
+        value="<%= book.publishDate == null ? '' : book.publishDate.toISOString().split('T')[0] %>" required> <!-- split Date from Time (2020-05-12T19:41) and get Date [0] -->
+</div>
+<div>
+    <label>Número de Páginas</label>
+    <input type="number" name="pageCount" 
+        value="<%= book.pageCount %>" min="1" placeholder="Páginas" required> <!-- set min to 1 to avoid future input errors -->
+</div>
+<div>
+    <label>Portada</label>
+    <input type="file" name="cover" required> <!-- actual cover image file (not image name/path) -->
+</div>
+<div>
+    <label>Descripción</label>
+    <textarea name="description" placeholder="Introducir Texto"><%= book.description %></textarea> <!-- text area support multiple text line (you can hit enter and still able to write more); value included outside the tag -->
+</div>
