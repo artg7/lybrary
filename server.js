@@ -52,11 +52,11 @@ app.use(express.urlencoded({ extended: false }));
 }).single('cover')); //input name @ books/_form_fields HTML/ejs */
 
 //Files Splitting
-const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
+/* const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
 const splitter = new gridfs ({
     url: process.env.DATABASE_URL,
     file: (req, file) => {
-        if (file.mimetype === 'image/jpeg') {
+        if (file.mimetype === imageMimeTypes) {
           return {
             bucketName:path.join(__dirname, 'public/uploads/bookCovers'),
             filename: new Date().getTime() + path.extname(file.originalname)};
@@ -64,10 +64,10 @@ const splitter = new gridfs ({
             return null;}
 }})
 
-app.use(multer.diskStorage({splitter}).single('cover'));
+app.use(multer({splitter}).single('cover')); */
 
 //File Saving
-/* const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
+const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
 const storage = multer.diskStorage({
     destination: path.join(__dirname, 'public/uploads/bookCovers'),
     limits: {
@@ -82,7 +82,7 @@ const storage = multer.diskStorage({
         cb(null, new Date().getTime() + path.extname(file.originalname));
     }})
 
-app.use(multer({storage}).single('cover')); */
+app.use(multer({storage}).single('cover'));
 
 //Static files
 app.use(express.static(path.join(__dirname, 'public')));
