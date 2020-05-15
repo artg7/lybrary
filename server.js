@@ -52,22 +52,22 @@ app.use(express.urlencoded({ extended: false }));
 }).single('cover')); //input name @ books/_form_fields HTML/ejs */
 
 //Files Splitting
-const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
+/* const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
 const splitter = new gridfs ({
     url: process.env.DATABASE_URL,
     file: (req, file) => {
         if (imageMimeTypes.includes(file.mimetype)) {
           return {
-            //bucketName: path.join(__dirname, 'public/uploads/bookCovers'),
+            bucketName: path.join(__dirname, 'public/uploads/bookCovers'),
             filename: Date.now() + path.extname(file.originalname)};
         } else {
             return null;}
 }})
 
-app.use(multer({splitter}).single('cover'));
+app.use(multer({splitter}).single('cover')); */
 
 //File Saving
-/* const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
+//const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
 const storage = multer.diskStorage({
     destination: path.join(__dirname, 'public/uploads/bookCovers'),
     limits: {
@@ -77,12 +77,23 @@ const storage = multer.diskStorage({
         parts: 1 // files + fields
     },
     fileFilter: (req, file, cb) => {
-        cb(null, imageMimeTypes.includes(file.mimetype))},
+        
+        var filetypes = /jpeg|jpg|png|gif/;
+        var mimetype = filetypes.test(file.mimetype);
+        var extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+
+        if (mimetype && extname) {
+            return cb(null, true); //null=not accepted; true=accepted
+        }
+        cb("Error: Formato de imagen no soportado. Formatos soportados: " + filetypes)},
+        //cb(null, imageMimeTypes.includes(file.mimetype))},
+    
     filename: (req, file, cb) => {
         cb(null, new Date().getTime() + path.extname(file.originalname));
+        //cb(null, uuid() + path.extname(file.originalname));
     }})
 
-app.use(multer({storage}).single('cover')); */
+app.use(multer({storage}).single('cover'));
 
 //Static files
 app.use(express.static(path.join(__dirname, 'public')));
