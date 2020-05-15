@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
 router.get('/', async (req, res) => {
     let query = BookInDB.find(); //in this case the query is of elements stored in the db, not just browser query 
     if(req.query.title) {
-        query = query.regex('title', new RegExp(req.query.name, 'i'))  
+        query = query.regex('title', new RegExp(req.query.title, 'i'))  
     }
 
     if(req.query.publishedBefore) {
