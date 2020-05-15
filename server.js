@@ -7,6 +7,7 @@ const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
 const path = require('path');
 const multer = require('multer');
+const gridfs = require('multer-gridfs-storage');
 
 //DB Connection
 mongoose.connect(process.env.DATABASE_URL, {
@@ -50,16 +51,38 @@ app.use(express.urlencoded({ extended: false }));
     limits: { fileSize: 1000000 },
 }).single('cover')); //input name @ books/_form_fields HTML/ejs */
 
+//Files Splitting
 const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
+const splitter = new gridfs ({
+    url: process.env.DATABASE_URL,
+    file: (req, file) => {
+        if (file.mimetype === imageMimeTypes) {
+          return {
+            bucketName:path.join(__dirname, 'public/uploads/bookCovers'),
+            filename: new Date().getTime() + path.extname(file.originalname)};
+        } else {
+            return null;}
+}})
+
+app.use(multer({splitter}).single('cover'));
+
+//File Saving
+/* const imageMimeTypes = ['image/jpeg','image/jpg','image/png','image/gif']
 const storage = multer.diskStorage({
     destination: path.join(__dirname, 'public/uploads/bookCovers'),
+    limits: {
+        fields: 0, // 0non-file field
+        fileSize: 1000000, // 1mb maximum size
+        files: 1, // maximum 1 file
+        parts: 1 // files + fields
+    },
     fileFilter: (req, file, cb) => {
         cb(null, imageMimeTypes.includes(file.mimetype))},
     filename: (req, file, cb) => {
         cb(null, new Date().getTime() + path.extname(file.originalname));
     }})
 
-app.use(multer({storage}).single('cover'));
+app.use(multer({storage}).single('cover')); */
 
 //Static files
 app.use(express.static(path.join(__dirname, 'public')));
