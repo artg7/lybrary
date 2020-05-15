@@ -58,7 +58,7 @@ const splitter = new gridfs ({
     file: (req, file) => {
         if (imageMimeTypes.includes(file.mimetype)) {
           return {
-            bucketName:path.join(__dirname, 'public/uploads/bookCovers'),
+            bucketName: path.join(__dirname, 'public/uploads/bookCovers'),
             filename: Date.now() + path.extname(file.originalname)};
         } else {
             return null;}
