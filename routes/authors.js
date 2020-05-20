@@ -44,7 +44,7 @@ router.get('/:id', async (req, res) => {
     try {
         const author = await AuthorInDB.findById(req.params.id)
         const books = await BookInDB.find({author: author.id}).limit(6).exec() //setting the maximum number of books to show on each author page to 6, so we do not retrieve more data that we wont print later @show.ejs | .exec() to execute that function of finding passing author.id, with a limit of 6 results
-        res.render('books/show', {
+        res.render('authors/show', {
             author: author,
             booksByAuthor: books
         })

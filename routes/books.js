@@ -73,6 +73,17 @@ router.post('/', async (req, res) => { //pasing the stored file: input name @ bo
     }
 })
 
+//Edit an Specific Book
+router.get('/:id/edit', async (req, res) => {
+    try {
+        const book = await BookInDB.findById(req.params.id)
+        renderEditPage(res, book) //no need to pass anything for error, as /new will never have
+    } catch {
+        res.redirect('/')
+    }
+    
+    })
+
 //Show an Specific Book
 router.get('/:id', async (req,res) => {
     try {
@@ -84,16 +95,6 @@ router.get('/:id', async (req,res) => {
     }
 })
 
-//Edit an Specific Book
-router.get('/:id/edit', async (req, res) => {
-    try {
-        const book = await BookInDB.findById(req.params.id)
-        renderEditPage(res, book) //no need to pass anything for error, as /new will never have
-    } catch {
-        res.redirect('/')
-    }
-    
-    })
 
 //Required for MULTER, as we are removing files (multipart/form-data)
 /* function removeBookCover (fileName) {
