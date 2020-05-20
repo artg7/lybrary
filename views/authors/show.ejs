@@ -1,6 +1,6 @@
 <h2><%= author.name %></h2>
 <a href="/author/<%= author.id %>/edit"></a>
-<%- include('../partials/deleteForm.ejs', { url: `/authors/${element.id}`}) %>
+<%- include('../partials/deleteForm.ejs', { url: `/authors/${author.id}`}) %>
 <% if (booksByAuthor.length > 0) { %> <!-- Remember HTML doesn´t have if/for/foreach bucles, that´s why we use ejs -->
  <h2>Libros del Autor</h2>
  <% books.forEach(element => { %> 
