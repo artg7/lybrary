@@ -76,7 +76,7 @@ router.post('/', async (req, res) => { //pasing the stored file: input name @ bo
 //Show an Specific Book
 router.get('/:id', async (req,res) => {
     try {
-        const book = await (await BookInDB.findById(req.params.id).populate('author')).exec() //to populate/retrieve the info @ the author Schema based on his id (otherwise we wont have information of author, but just an id reference to author stored in the book Schema)
+        const book = await BookInDB.findById(req.params.id).populate('author').exec() //to populate/retrieve the info @ the author Schema based on his id (otherwise we wont have information of author, but just an id reference to author stored in the book Schema)
         res.render('books/show', {book: book})
 
     } catch {
