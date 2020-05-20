@@ -102,7 +102,7 @@ router.get('/:id/edit', async (req, res) => {
 } */
 
 //Update Book Route
-router.post('/:id', async (req, res) => { //pasing the stored file: input name @ books/_form_fields HTML/ejs
+router.put('/:id', async (req, res) => { //pasing the stored file: input name @ books/_form_fields HTML/ejs
     /* let fileName = req.file != null ? req.file.filename : null */ //if we get a file from user, store name in filename var, otherwise store null
     let book
     try {
