@@ -7,7 +7,7 @@ const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
 const path = require('path');
 const multer = require('multer');
-const gridfs = require('multer-gridfs-storage');
+const methodOverride = require('method-override')
 
 //DB Connection
 mongoose.connect(process.env.DATABASE_URL, {
@@ -33,6 +33,9 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.set('layout', path.join(__dirname, 'views/layouts/layout'));
 app.use(expressLayouts);
+
+//Edit/Delete RESTFUL Methods
+app.use(methodOverride('_method'))
 
 //Middlewares
 app.use(express.urlencoded({ extended: false }));
@@ -94,4 +97,4 @@ app.use('/authors', require('./routes/authors'));
 app.use('/books', require('./routes/books'));
 
 //Starting server
-app.listen(process.env.PORT || 3000)
+app.listen(process.env.PORT || 3001)

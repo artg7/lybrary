@@ -1,8 +1,10 @@
 <h2>Últimos Libros Añadidos</h2>
 <div>
     <% books.forEach(element => { %> 
-    <div>
+        <div>
+            <a href="/books/<%= element.id %>">
         <img height="150" width="100" src="<%= element.coverImageNameDeciphered %>">
+            </a> <!-- Wrapping up the link (href) inside the image -->
        <% }) %>
     </div>
 </div>

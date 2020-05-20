@@ -8,4 +8,9 @@
 <!-- 'element' can be changed for 'author' or other name, but in the end are the elements of the array saved @const authors at the authors route found in db -->
 <% authors.forEach(element => { %>
     <div><%= element.name %> </div>
+    <a href="/authors/<%= element.id %>">Ver</a>
+    <a href="/authors/<%= element.id %>/edit">Editar</a>
+    <!-- ${element.id} instead of ejs < % as the code inside the brackets is run @server -->
+    <%- include('../partials/deleteForm.ejs', { url: `/authors/${element.id}`}) %> 
    <% }) %>
+   <%=  %> 

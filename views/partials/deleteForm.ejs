@@ -1,0 +1,5 @@
+<!-- Setting the DELETE route with methodOverride (_method) ! Changing a "fake" POST with a DELETE method-->
+<!-- methodOverride redirect the POST method to the DELETE already generated on user click | We have to use this as browsers only work using GET & POST req -->
+<form method="POST" action="<%= url %>?_method=DELETE">
+    <button type="submit">Eliminar</button>
+</form>

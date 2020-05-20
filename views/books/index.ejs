@@ -19,7 +19,9 @@
 <!-- 'element' can be changed for 'book' or other name, but in the end are the elements of the array saved @const books XXX at the authors route found in db -->
 <% books.forEach(element => { %> 
     <div>
+        <a href="/books/<%= element.id %>">
     <img height="150" width="100" src="<%= element.coverImageNameDeciphered %>"> <!-- no need to include /public as it is already define for static files -->
+        </a> <!-- Wrapping up the link (href) inside the image -->
    <% }) %>
 </div>
 </div>

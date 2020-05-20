@@ -60,8 +60,8 @@ router.post('/', async (req, res) => { //pasing the stored file: input name @ bo
 
     try {
         const newBook = await book.save()
-        //res.redirect(`books/${newBook.id}`)
-        res.redirect('books')
+        res.redirect(`books/${newBook.id}`)
+        //res.redirect('/books')
     } catch (e) {
         //Required for MULTER
 /*         if (book.coverImageName) {
@@ -73,18 +73,99 @@ router.post('/', async (req, res) => { //pasing the stored file: input name @ bo
     }
 })
 
+//Show an Specific Book
+router.get('/:id', async (req,res) => {
+    try {
+        const book = await (await BookInDB.findById(req.params.id).populate('author')).exec() //to populate/retrieve the info @ the author Schema based on his id (otherwise we wont have information of author, but just an id reference to author stored in the book Schema)
+        res.render('books/show', {book: book})
+
+    } catch {
+        res.redirect('/')
+    }
+})
+
+//Edit an Specific Book
+router.get('/:id/edit', async (req, res) => {
+    try {
+        const book = await BookInDB.findById(req.params.id)
+        renderEditPage(res, book) //no need to pass anything for error, as /new will never have
+    } catch {
+        res.redirect('/')
+    }
+    
+    })
+
 //Required for MULTER, as we are removing files (multipart/form-data)
 /* function removeBookCover (fileName) {
     unlink(path.resolve('./public' + fileName), err => { //as fileName already contains '/uploads/bookCovers/' string
         if (err) console.error(err)}) //redirect the error to console, so we dont ruin user experience displaying internal errors on the broswer
 } */
 
-async function renderNewPage (res, book, hasError = false) { //res to render/redirect, book data for try, hasError for catch
+//Update Book Route
+router.post('/:id', async (req, res) => { //pasing the stored file: input name @ books/_form_fields HTML/ejs
+    /* let fileName = req.file != null ? req.file.filename : null */ //if we get a file from user, store name in filename var, otherwise store null
+    let book
+    try {
+        book = await BookInDB.findById(req.params.id)
+        book.author = req.body.author
+        book.title = req.body.title
+        book.publishDate = new Date (req.body.publishDate)
+        book.pageCount = req.body.pageCount
+        book.description = req.body.description
+        if(req.body.cover) {
+            saveCover(book, req.body.cover)
+        }
+        await book.save()
+        res.redirect(`books/${newBook.id}`)
+        //res.redirect('/books')
+    } catch {
+        if (book) {//if book exist but there was an error
+            renderEditPage(res, book, hasError=true)    
+        } else {
+            redirect('/')
+        }
+    }
+})
+
+//Delete Book Route
+router.delete('/:id', async (req,res) => {
+    const book = await BookInDB.findById()
+    try {
+        if(book) {
+            await book.remove()
+            res.redirect('/books')
+        }   
+    } catch {
+        if (book) { //if book exist but we still have an error
+            res.render('/books/show', {book: book, errorMessage: 'No se pudo eliminar el Libro'})
+        } else {
+            res.redirect('/')
+        }
+
+    }
+
+})
+
+async function renderNewPage (res, book, hasError = false) {
+    renderFormPage(res, book, 'new', hasError)    
+}
+
+async function renderEditPage (res, book, hasError = false) {
+    renderFormPage(res, book, 'edit', hasError)    
+}
+
+async function renderFormPage (res, book, form, hasError = false) { //res to render/redirect, book data for try, hasError for catch
     try {
         const authors = await AuthorInDB.find({})
         const newBookParams = { authors: authors, book: book }
-        if (hasError) newBookParams.errorMessage = "Error creando Libro. Falta información Requerida"
-        res.render('books/new', newBookParams) 
+        if (hasError) {
+            if(form === 'edit') {
+                newBookParams.errorMessage = "Error actualizando Libro" //if form = edit
+            } else {
+                newBookParams.errorMessage = "Error creando Libro" //if form = new
+            }
+        }
+        res.render(`books/${form}`, newBookParams) 
     } catch {
         res.redirect('/books')
     }

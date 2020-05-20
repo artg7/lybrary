@@ -1,0 +1,7 @@
+<h2>Editar Autor</h2>
+<!-- Creating form inside authors/edit route & redirecting results to router '/' PUT with methodOverride (?_method query)-->
+<form action="/authors<%= author.id %>?_method=PUT" method="POST">
+<%- include('_form_fields.ejs') %>  
+    <a href="/authors<%= author.id %>">Cancelar</a> <!-- Anchor reference to go back to specific author id page; GET '/:id'  -->
+    <button type="submit">Actualizar</button> <!-- send back to authors PUT '/:id' as stated in the form action -->
+</form>
