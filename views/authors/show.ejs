@@ -1,5 +1,5 @@
 <h2><%= author.name %></h2>
-<a href="/authors/<%= author.id %>/edit"></a>
+<a href="/authors/<%= author.id %>/edit">Editar</a>
 <%- include('../partials/deleteForm.ejs', {url:`/authors/${author.id}`}) %>
 <% if (booksByAuthor.length > 0) { %> <!-- Remember HTML doesn´t have if/for/foreach bucles, that´s why we use ejs -->
  <h2>Libros del Autor</h2>
@@ -8,6 +8,6 @@
     <img height="150" width="100" src="<%= element.coverImageNameDeciphered %>"> <!-- no need to include /public as it is already define for static files -->
         </a> <!-- Wrapping up the link (href) inside the image -->
    <% }) %>
-
+<% } %>
 
    
